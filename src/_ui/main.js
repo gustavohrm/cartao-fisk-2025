@@ -114,14 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const images = document.querySelectorAll(".image");
-  let globalIndex = 0,
+  let globalIndex = 1,
     last = { x: 0, y: 0 };
   const activate = (image, x, y) => {
     image.style.left = `${x}px`;
     image.style.top = `${y}px`;
     image.style.zIndex = globalIndex;
 
-    tail.classList.toggle("active", true);
+    image.classList.toggle("active", true);
 
     last = { x, y };
   };
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const distanceFromLast = (x, y) => Math.hypot(x - last.x, y - last.y);
 
   const handleOnMove = (e) => {
-    if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / 20) {
+    if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / 10) {
       const lead = images[globalIndex % images.length],
         tail = images[(globalIndex - 3) % images.length];
 
@@ -140,4 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
       globalIndex++;
     }
   };
+
+  document.addEventListener("mousemove", handleOnMove)
 });
