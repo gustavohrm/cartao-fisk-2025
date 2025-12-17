@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ed3237;
+  --color-red: var(--color-red-700);
+  --color-text: var(--color-neutral-50);
+}
+
+@utility cur-default {
+  cursor:
+    url("/assets/cursor-default.png") 10 10,
+    auto;
+}
+
+@utility cur-pointer {
+  cursor:
+    url("/assets/cursor-pointer.png") 10 10,
+    auto;
+}
+
+@layer base {
+  * {
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+
+  html,
+  body {
+    @apply relative flex flex-col min-h-screen overflow-hidden bg-red cur-default z-0;
+  }
+
+  .image {
+    @apply absolute -translate-1/2 left-0 top-0 object-contain h-32 border-4 border-text scale-0 opacity-0;
+    &.active {
+      @apply scale-100 opacity-100;
+    }
+  }
+
+  .drag-img {
+    @apply absolute size-16 cur-pointer;
+  }
+
+  .snowflake {
+    @apply absolute size-1 bg-text rounded-full z-99 pointer-events-none;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+  }
+}

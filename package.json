@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:check": "prettier --check .",
+    "lint:fix": "prettier --write ."
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "prettier": "^3.7.4",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.0"
+  },
+  "dependencies": {
+    "gsap": "^3.14.2"
+  },
+  "type": "module"
+}
