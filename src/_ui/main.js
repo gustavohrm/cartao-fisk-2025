@@ -36,44 +36,12 @@ function createSnowflake(x, y) {
   }, duration * 800);
 }
 
-function spawnRandomImages(amount = 12) {
-  const source = [
-    "/assets/bell.png",
-    "/assets/gift.png",
-    "/assets/hat.png",
-    "/assets/wreath.png",
-  ];
-  const size = 64;
-  const fragment = document.createDocumentFragment();
-  const maxX = window.innerWidth - size;
-  const maxY = window.innerHeight - size;
-
-  for (let i = 0; i < amount; i++) {
-    const img = document.createElement("img");
-    img.className = "drag-img";
-
-    const randomImage = source[Math.floor(Math.random() * source.length)];
-
-    img.src = randomImage;
-
-    img.style.left = `${Math.random() * maxX}px`;
-    img.style.top = `${Math.random() * maxY}px`;
-    img.style.transform = `rotate(${Math.round(Math.random() * 360)}deg)`;
-
-    fragment.appendChild(img);
-  }
-
-  document.body.appendChild(fragment);
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("mousemove", (e) => {
     for (let i = 0; i < 2; i++) {
       createSnowflake(e.clientX, e.clientY);
     }
   });
-
-  spawnRandomImages(8);
 
   Draggable.create(".drag-img", {
     bounds: "#container",
@@ -122,6 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     image.style.zIndex = globalIndex;
 
     image.classList.toggle("active", true);
+    // setTimeout(() => {
+    //   image.classList.toggle("active", false);
+    // }, 4000);
 
     last = { x, y };
   };
@@ -129,9 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const distanceFromLast = (x, y) => Math.hypot(x - last.x, y - last.y);
 
   const handleOnMove = (e) => {
-    if (distanceFromLast(e.clientX, e.clientY) > window.innerWidth / 10) {
+    if (distanceFromLast(e.clientX, e.clientY) > 120) {
       const lead = images[globalIndex % images.length],
-        tail = images[(globalIndex - 3) % images.length];
+        tail = images[(globalIndex - 7) % images.length];
 
       activate(lead, e.clientX, e.clientY);
 
@@ -141,5 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.addEventListener("mousemove", handleOnMove)
+  document.addEventListener("mousemove", handleOnMove);
+  document.addEventListener("touchmove", handleOnMove);
 });

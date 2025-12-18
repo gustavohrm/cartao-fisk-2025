@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #ed3237;
   --color-red: var(--color-red-700);
   --color-text: var(--color-neutral-50);
 }
@@ -29,7 +28,7 @@
   }
 
   .image {
-    @apply absolute -translate-1/2 left-0 top-0 object-contain h-64 border-4 border-text scale-0 opacity-0 transition duration-400;
+    @apply absolute -translate-1/2 left-0 top-0 object-contain h-32 md:h-64 border-4 border-text scale-0 opacity-0 pointer-events-none transition duration-400;
 
     &.active {
       @apply scale-100 opacity-100;
@@ -37,7 +36,7 @@
   }
 
   .drag-img {
-    @apply absolute size-16 cur-pointer;
+    @apply absolute size-16 cur-pointer z-50;
   }
 
   .snowflake {
