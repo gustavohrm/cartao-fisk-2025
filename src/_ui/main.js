@@ -133,37 +133,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 800);
   };
 
+  // valores base do design original
+  const BASE_WIDTH = 1920;
+  const BASE_GRINCH_TIME = 4; // segundos
+
+  // velocidade base (px/s)
+  const baseSpeed = BASE_WIDTH / BASE_GRINCH_TIME;
+
+  // largura atual
+  const screenWidth = document.documentElement.clientWidth || window.innerWidth;
+
+  // (opcional) largura do grinch
+  const grinchWidth = 56;
+
+  // distância total que o grinch percorre
+  const distance = screenWidth + grinchWidth;
+
+  // tempo ajustado
+  const grinchTime = distance / baseSpeed;
+
+  // seta a variável CSS
+  game.style.setProperty("--grinch-time", `${grinchTime}s`);
+
+  const handleGame = () => {
+    if (!game.classList.contains("playing")) {
+      let checkCollision = setInterval(() => {
+        const santaRect = santa.getBoundingClientRect();
+        const grinchRect = grinch.getBoundingClientRect();
+
+        const xColliding =
+          grinchRect.left < santaRect.right && grinchRect.left > santaRect.left;
+        const yColliding = santaRect.bottom > grinchRect.top;
+        score += 1;
+        scoreEl.textContent = score;
+
+        if (xColliding && yColliding) {
+          if (score > hScore) {
+            hScore = score;
+            hScoreEl.textContent = hScore;
+            localStorage.setItem("hScore", hScore);
+          }
+          score = 0;
+          scoreEl.textContent = score;
+          clearInterval(checkCollision);
+          game.classList.toggle("over", true);
+          game.classList.toggle("playing", false);
+        }
+      }, 10);
+      game.classList.toggle("over", false);
+      game.classList.toggle("playing", true);
+      return;
+    }
+    santaJump();
+  };
+
   document.addEventListener("keypress", (e) => {
     if (e.key == " " || e.key == "Enter") {
-      if (!game.classList.contains("playing")) {
-        let checkCollision = setInterval(() => {
-          const santaRect = santa.getBoundingClientRect();
-          const grinchRect = grinch.getBoundingClientRect();
-
-          const xColliding =
-            grinchRect.left < santaRect.right &&
-            grinchRect.left > santaRect.left;
-          const yColliding = santaRect.bottom > grinchRect.top;
-          score += 1;
-          scoreEl.textContent = score;
-
-          if (xColliding && yColliding) {
-            if (score > hScore) {
-              hScore = score;
-              hScoreEl.textContent = hScore;
-              localStorage.setItem("hScore", hScore);
-            }
-            score = 0;
-            scoreEl.textContent = score;
-            clearInterval(checkCollision);
-            game.classList.toggle("over", true);
-            game.classList.toggle("playing", false);
-          }
-        }, 10);
-        game.classList.toggle("over", false);
-        return game.classList.toggle("playing", true);
-      }
-      santaJump();
+      handleGame();
     }
   });
+
+  window.addEventListener("click", handleGame);
 });

@@ -52,6 +52,8 @@
   }
 
   #game {
+    --grinch-time: 4s;
+    --santa-time: 1s;
     background: linear-gradient(
       to top,
       oklch(50.5% 0.213 27.518) 0%,
@@ -63,7 +65,8 @@
     &.playing {
       & #grinch {
         transform: translateX(100%);
-        animation: grinch-running 4s infinite linear;
+        animation: grinch-running infinite linear;
+        animation-duration: var(--grinch-time);
         animation-play-state: running;
       }
 
@@ -91,7 +94,8 @@
     }
 
     & #santa.jump {
-      animation: santa-jump 1s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: santa-jump cubic-bezier(0.4, 0, 0.2, 1);
+      animation-duration: var(--santa-time);
     }
   }
 
