@@ -114,4 +114,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("mousemove", handleOnMove);
   document.addEventListener("touchmove", handleOnMove);
+
+  const game = document.getElementById("game");
+  const santa = document.getElementById("santa");
+  const grinch = document.getElementById("grinch");
+  const scoreEl = document.getElementById("score");
+  const hScoreEl = document.getElementById("highest-score");
+  let score = 0;
+  let hScore = parseInt(localStorage.getItem("hScore")) || 0;
+  hScoreEl.textContent = hScore;
+  let checkCollision;
+
+  const santaJump = () => {
+    if (santa.classList.contains("jump")) return;
+    santa.classList.toggle("jump", true);
+    setTimeout(() => {
+      santa.classList.toggle("jump", false);
+    }, 800);
+  };
+
+  document.addEventListener("keypress", (e) => {
+    if (e.key == " " || e.key == "Enter") {
+      if (!game.classList.contains("playing")) {
+        let checkCollision = setInterval(() => {
+          const santaRect = santa.getBoundingClientRect();
+          const grinchRect = grinch.getBoundingClientRect();
+
+          const xColliding =
+            grinchRect.left < santaRect.right &&
+            grinchRect.left > santaRect.left;
+          const yColliding = santaRect.bottom > grinchRect.top;
+          score += 1;
+          scoreEl.textContent = score;
+
+          if (xColliding && yColliding) {
+            if (score > hScore) {
+              hScore = score;
+              hScoreEl.textContent = hScore;
+              localStorage.setItem("hScore", hScore);
+            }
+            score = 0;
+            scoreEl.textContent = score;
+            clearInterval(checkCollision);
+            game.classList.toggle("over", true);
+            game.classList.toggle("playing", false);
+          }
+        }, 10);
+        game.classList.toggle("over", false);
+        return game.classList.toggle("playing", true);
+      }
+      santaJump();
+    }
+  });
 });

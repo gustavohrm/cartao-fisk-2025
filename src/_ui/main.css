@@ -50,4 +50,69 @@
       opacity: 0;
     }
   }
+
+  #game {
+    background: linear-gradient(
+      to top,
+      oklch(50.5% 0.213 27.518) 0%,
+      oklch(50.5% 0.213 27.518) 8%,
+      transparent 24%,
+      transparent 100%
+    );
+
+    &.playing {
+      & #grinch {
+        transform: translateX(100%);
+        animation: grinch-running 4s infinite linear;
+        animation-play-state: running;
+      }
+
+      & #start {
+        display: none !important;
+      }
+
+      & #score-container {
+        visibility: visible !important;
+      }
+    }
+
+    &.over {
+      & #start {
+        display: none !important;
+      }
+
+      & #over {
+        visibility: visible !important;
+      }
+
+      & #score-container {
+        visibility: visible !important;
+      }
+    }
+
+    & #santa.jump {
+      animation: santa-jump 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  @keyframes grinch-running {
+    to {
+      right: 100%;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes santa-jump {
+    0% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-180%);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
 }
